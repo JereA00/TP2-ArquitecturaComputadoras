@@ -20,46 +20,46 @@ module tb_interface_circuit();
     wire    [DBIT_01-1:0]          o_data_out_01;
     
     initial begin
-        i_clk_01 = 1'b0; 
-        i_reset_01 = 1'b1;
-        i_rx_done_tick_01 = 1'b0;
-        i_rx_data_01 = {DBIT_01{1'b0}};
+        i_clk_01            = 1'b0; 
+        i_reset_01          = 1'b1;
+        i_rx_done_tick_01   = 1'b0;
+        i_rx_data_01        = {DBIT_01{1'b0}};
 
-        #10 i_reset_01 = 1'b0; // Desactivo la accion del reset.
+        #10 i_reset_01      = 1'b0; // Desactivo la accion del reset.
         
         // test1 - OR
         #10
-        i_rx_data_01 = 8'b10010110; //data a
-        i_rx_done_tick_01 = 1'b1;
-        #1
-        i_rx_done_tick_01 = 1'b0;
+        i_rx_data_01        = 8'b10010110; //data a
+        i_rx_done_tick_01   = 1'b1;
+        #2
+        i_rx_done_tick_01   = 1'b0;
         #10
-        i_rx_data_01 = 8'b01101001; //data b
-        i_rx_done_tick_01 = 1'b1;
-        #1
-        i_rx_done_tick_01 = 1'b0;
+        i_rx_data_01        = 8'b01101001; //data b
+        i_rx_done_tick_01   = 1'b1;
+        #2
+        i_rx_done_tick_01   = 1'b0;
         #10
-        i_rx_data_01 = 8'b00100101; //op OR
-        i_rx_done_tick_01 = 1'b1;
-        #1
-        i_rx_done_tick_01 = 1'b0;
+        i_rx_data_01        = 8'b00100101; //op OR
+        i_rx_done_tick_01   = 1'b1;
+        #2
+        i_rx_done_tick_01   = 1'b0;
         
-        // test2 - RESTA
+        /* test2 - RESTA */
         #10
-        i_rx_data_01 = 8'd21; //data a
-        i_rx_done_tick_01 = 1'b1;
-        #1
-        i_rx_done_tick_01 = 1'b0;
+        i_rx_data_01        = 8'd21; //data a
+        i_rx_done_tick_01   = 1'b1;
+        #2
+        i_rx_done_tick_01   = 1'b0;
         #10
-        i_rx_data_01 = 8'd34; //data b
-        i_rx_done_tick_01 = 1'b1;
-        #1
-        i_rx_done_tick_01 = 1'b0;
+        i_rx_data_01        = 8'd34; //data b
+        i_rx_done_tick_01   = 1'b1;
+        #2
+        i_rx_done_tick_01   = 1'b0;
         #10
-        i_rx_data_01 = 8'b11100010; //op RESTA (100010)
-        i_rx_done_tick_01 = 1'b1;
-        #1
-        i_rx_done_tick_01 = 1'b0;
+        i_rx_data_01        = 8'b11100010; //op RESTA (100010)
+        i_rx_done_tick_01   = 1'b1;
+        #2
+        i_rx_done_tick_01   = 1'b0;
         
         
 

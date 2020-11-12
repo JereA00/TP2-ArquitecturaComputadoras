@@ -2,15 +2,15 @@
 
 module alu
         #(
-        parameter N_BITS_OP = 6,
-        parameter N_BITS = 8
+            parameter N_BITS_OP = 6,
+            parameter N_BITS = 8
         )
         
         (
-            input wire [N_BITS_OP - 1 : 0]        i_operator,
-            input wire [N_BITS - 1 : 0]              i_data1,
-            input wire  [N_BITS - 1 : 0]             i_data2, 
-            output reg [N_BITS - 1 : 0]                o_alu
+            input wire        [N_BITS_OP - 1 : 0]           i_operator,
+            input wire signed [N_BITS - 1 : 0]              i_data1,
+            input wire signed [N_BITS - 1 : 0]              i_data2, 
+            output reg        [N_BITS - 1 : 0]              o_alu
         );
                 
         /*!
