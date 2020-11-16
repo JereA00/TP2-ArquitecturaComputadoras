@@ -2,27 +2,30 @@
 
 module interface_circuit
 #(
-	parameter  DBIT  = 8,  // buffer bits
-	           NB_OP = 6   // Operation bits
+	parameter  DBIT    = 8,  // buffer bits
+	            NB_OP   = 6   // Operation bits
 	            
 ) 
 (   //INPUT
 	input                     i_clk,
  	input                     i_reset,
- 	input                     i_rx_done_tick,
+ 	input                     i_rx_done,
  	input      [DBIT-1:0]     i_rx_data,
- 	input      [DBIT-1:0]     i_alu_data_in,
+ 	input      [DBIT-1:0]     i_alu_result,
     //OUTPUT
-	output reg [DBIT-1 : 0]   o_data_a,
-	output reg [DBIT-1 : 0]   o_data_b,
+	output reg [DBIT-1 : 0]   o_data_one,
+	output reg [DBIT-1 : 0]   o_data_two,
 	output reg [NB_OP-1 : 0]  o_operation,
  	output reg                o_tx_start,
- 	output     [DBIT-1:0]     o_data_out 
+ 	output     [DBIT-1:0]     o_alu_result 
 );
 	
-	assign o_data_out = i_alu_data_in;
-	
 	reg [1 : 0] counter_in = 2'b00;
+	reg [DBIT-1 : 0] r_data_one;
+	reg [DBIT-1 : 0] r_data_two;
+    reg [DBIT-1 : 0] r_operator;
+    reg [DBIT-1 : 0] r_result;
+
 	
 	
 	always @(posedge i_clk) 
@@ -51,4 +54,6 @@ module interface_circuit
             end
         end
 	end
+	
+	assign o_data_out = i_alu_data_in;
 endmodule
