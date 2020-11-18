@@ -5,12 +5,11 @@ module alu
             parameter N_BITS_OP = 6,
             parameter N_BITS = 8
         )
-        
-        (
+        ( 
+            output reg        [N_BITS - 1 : 0]              o_alu,
             input wire        [N_BITS_OP - 1 : 0]           i_operator,
-            input wire signed [N_BITS - 1 : 0]              i_data1,
-            input wire signed [N_BITS - 1 : 0]              i_data2, 
-            output reg        [N_BITS - 1 : 0]              o_alu
+            input wire signed [N_BITS - 1 : 0]              i_data_one,
+            input wire signed [N_BITS - 1 : 0]              i_data_two
         );
                 
         /*!
@@ -31,30 +30,30 @@ module alu
         always@(*)
         begin
                 case (i_operator)
-                    ADD_OP: o_alu = i_data1 + i_data2;    //ADD
-                    SUB_OP: o_alu = i_data1 - i_data2;    //SUB 
-                    AND_OP: o_alu = i_data1 & i_data2;    //AND 
-                    OR_OP:  o_alu = i_data1 | i_data2;    //OR
-                    XOR_OP: o_alu = i_data1 ^ i_data2;    //XOR
+                    ADD_OP: o_alu = i_data_one + i_data_two;    //ADD
+                    SUB_OP: o_alu = i_data_one - i_data_two;    //SUB 
+                    AND_OP: o_alu = i_data_one & i_data_two;    //AND 
+                    OR_OP:  o_alu = i_data_one | i_data_two;    //OR
+                    XOR_OP: o_alu = i_data_one ^ i_data_two;    //XOR
                     SRA_OP: 
                     begin
-                        if (i_data2 > i_data1) begin
+                        if (i_data_two > i_data_one) begin
                             o_alu = {N_BITS{1'b0}};
                         end 
                         else begin 
-                            o_alu = i_data1 >>> i_data2;  //SRA
+                            o_alu = i_data_one >>> i_data_two;  //SRA
                         end 
                     end
                     SRL_OP: 
                     begin
-                        if (i_data2 > i_data1) begin
+                        if (i_data_two > i_data_one) begin
                             o_alu = {N_BITS{1'b0}};
                         end 
                         else begin 
-                            o_alu = i_data1 >> i_data2;   //SRL
+                            o_alu = i_data_one >> i_data_two;   //SRL
                         end 
                     end 
-                    NOR_OP: o_alu = ~(i_data1 | i_data2); //NOR
+                    NOR_OP: o_alu = ~(i_data_one | i_data_two); //NOR
                     default  : 
                     begin
                         o_alu = {N_BITS{1'b0}};

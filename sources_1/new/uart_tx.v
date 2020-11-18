@@ -104,7 +104,7 @@ begin
                 tx_reg_next = 1'b0;
                 if(i_tick_brg)
                 begin
-                    if(counter_sampling_current==15)
+                    if(counter_sampling_current==(STOPBITS_TCK-1))
                     begin
                         next_state = DATA;
                         counter_sampling_next = 0;
@@ -121,7 +121,7 @@ begin
                 tx_reg_next = shifted_bits_current[0];
                 if(i_tick_brg)
                 begin
-                    if(counter_sampling_current==15)
+                    if(counter_sampling_current==(STOPBITS_TCK-1))
                     begin
                         counter_sampling_next = 0;
                         shifted_bits_next = shifted_bits_current >> 1;

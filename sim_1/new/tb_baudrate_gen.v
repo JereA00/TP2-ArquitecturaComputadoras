@@ -1,43 +1,42 @@
 `timescale 1ns / 1ps
 
 module tb_baudrate_gen();
-    parameter BAUDRATE_MAX_COUNT = 15;
-    parameter BAUDRATE_NUM_BITS = 5;
+    parameter CLOCK_FREQ = 100*(10**6);
+    parameter BAUD_RATE  = 9600;
+    localparam T = 10;
     
     reg                              clk;
     reg                          i_reset;
     wire                        out_tick;
     
-    initial
-    begin
-        $dumpfile("tb_baudrate_gen.vcd");
-        $dumpvars(0,tb_baudrate_gen);
-        clk          = 1'b0;
-        i_reset      = 1'b0;
-        #10
-        i_reset      = 1'b1;
-        #10
-        i_reset      = 1'b0;
-        #2000
-        $finish;
-    end
-    
-    always
-        begin
-            #5 clk = ~clk;
-        end
-        
-        
-    baudrate_generator
+        baudrate_generator
     #(
-        .BAUDRATE_MAX_COUNT      (BAUDRATE_MAX_COUNT),
-        .BAUDRATE_NUM_BITS       (BAUDRATE_NUM_BITS)
+        .CLOCK_FREQ      (CLOCK_FREQ),
+        .BAUD_RATE       (BAUD_RATE)
     )
     u_baudrate_generator
     (
         .i_clk                   (clk),
         .i_reset             (i_reset),
-        .o_tick              (out_tick)
+        .o_brg_tck              (out_tick)
     ); 
+    
+    initial
+    begin
+        clk          = 1'b0;
+        i_reset      = 1'b1;
+        #(T);
+        i_reset      = 1'b0;
+        #(1000*T);
+        $finish;
+    end
+    
+    always
+        begin
+            clk = 1'b1;
+            #(T/2);
+            clk = 1'b0;
+            #(T/2);
+        end
     
 endmodule
