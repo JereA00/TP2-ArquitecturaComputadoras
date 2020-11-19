@@ -11,36 +11,9 @@ module top_module
         output o_tx,
         output o_tx_flag,
         input  i_rx,
-        input  i_rx_flag,
         input  clk,
         input  i_reset
-    );
-      
-    
-    
-    /*
-    //**************************************
-      Register used to hold data
-    //**************************************
-    reg r_tx_out;
-    reg r_tx_flag;
-    reg r_rx_in;
-    reg r_rx_flag;
-    
-    always@(posedge i_reset)
-    begin
-        r_tx_out    <= 0;
-        r_tx_flag   <= 0;
-        r_rx_in     <= 0;
-        r_rx_flag   <= 0;
-    end
-    assign o_tx      = r_tx_out;
-    assign o_tx_flag = r_tx_flag;
-    assign i_rx      = r_rx_in;
-    assign i_rx_flag = r_rx_flag;
-    */
-    
-    
+    ); 
 
     //**************************************
     //*  Wires used to interconnect modules

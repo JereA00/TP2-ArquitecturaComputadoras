@@ -17,10 +17,10 @@ module uart_rx
 //--------------------------------------
 //          States definitions
 //--------------------------------------   
-localparam IDLE    = 2'b00;    //Espero el bit de start
-localparam START   = 2'b01;    //Inicializa los registros, solo se ejecuta un ciclo
-localparam DATA    = 2'b10;    //Carga datos en el shift reg
-localparam STOP    = 2'b11;    //Paso los datos a out, espero el bit de stop
+localparam [1:0] IDLE    = 2'b00;    //Espero el bit de start
+localparam [1:0] START   = 2'b01;    //Inicializa los registros, solo se ejecuta un ciclo
+localparam [1:0] DATA    = 2'b10;    //Carga datos en el shift reg
+localparam [1:0] STOP    = 2'b11;    //Paso los datos a out, espero el bit de stop
 
 reg [1:0] current_state;
 reg [1:0] next_state;
@@ -41,7 +41,7 @@ reg [NBITS_DATA-1:0] data_buffer_next;
                current_state            <= IDLE;
                counter_sampling_current <= 0;
                counter_data_current     <= 0;
-               data_buffer_current      <= {NBITS_DATA{1'b0}};
+               data_buffer_current      <= 0;
          end
       else
          begin
@@ -70,7 +70,7 @@ reg [NBITS_DATA-1:0] data_buffer_next;
                end
          START: //Se cuentan los ticks hasta llegar al septimo
             if (i_tick_brg)
-               if (counter_sampling_current==(NBITS_DATA-1))
+               if (counter_sampling_current==(STOPBITS_TCK-1))
                   begin
                      next_state                = DATA;     //Proximo estado como DATA para receptar el dato
                      counter_sampling_next     = 0;        //La cantidad de ticks y bits en 0
@@ -83,20 +83,20 @@ reg [NBITS_DATA-1:0] data_buffer_next;
                if (counter_sampling_current==(STOPBITS_TCK-1))
                   begin
                      counter_sampling_next   = 0;
-                     data_buffer_next        = {i_rx, data_buffer_current[7:1]};    //Se arma el buffer
+                     data_buffer_next        = {i_rx, data_buffer_current[NBITS_DATA-1:1]};
                      if (counter_data_current==(NBITS_DATA-1))
-                     begin
-                        next_state = STOP;
-                     end
+                        begin
+                           next_state = STOP;
+                        end
                      else
                      begin
                         counter_data_next = counter_data_current + 1;
                      end
                   end
-               else
-               begin
-                  counter_sampling_next = counter_sampling_current + 1;
-               end
+                  else
+                  begin
+                     counter_sampling_next = counter_sampling_current + 1;
+                  end
          STOP:
             if (i_tick_brg)
                if (counter_sampling_current==(STOPBITS_TCK-1)) //Llego a 15 ticks

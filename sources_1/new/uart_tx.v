@@ -36,10 +36,10 @@ module uart_tx
 //--------------------------------------
 //          States definitions
 //--------------------------------------
-localparam  IDLE    = 2'b00;
-localparam  START   = 2'b01;
-localparam  DATA    = 2'b10;
-localparam  STOP    = 2'b11;
+localparam  [1:0] IDLE    = 2'b00;
+localparam  [1:0] START   = 2'b01;
+localparam  [1:0] DATA    = 2'b10;
+localparam  [1:0] STOP    = 2'b11;
 
 reg [1:0] current_state;
 reg [1:0] next_state;
@@ -79,7 +79,7 @@ end
 //--------------------------------
 //      FSMD next state: Logic and FU
 //----------------------------------
-always @(*)
+always @*
 begin
     next_state            = current_state;
     o_tx_done             = 1'b0;
@@ -95,7 +95,7 @@ begin
                 if(i_tx_start)
                 begin
                     next_state = START;
-                    counter_data_next = 0;
+                    counter_sampling_next = 0;
                     shifted_bits_next = i_data;
                 end
             end
@@ -131,15 +131,15 @@ begin
                         end
                         else
                         begin
-                            counter_data_next = counter_data_current+1;
+                            counter_data_next = counter_data_current + 1;
                         end
                     end
                     else
                     begin
-                        counter_sampling_next = counter_sampling_current+1;
+                        counter_sampling_next = counter_sampling_current + 1;
                     end
-                end
             end
+        end
         STOP:
         begin
             tx_reg_next = 1'b1;

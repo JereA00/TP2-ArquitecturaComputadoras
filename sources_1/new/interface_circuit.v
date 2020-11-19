@@ -107,6 +107,7 @@ begin
             begin
                 o_tx_start = 1'b1;
                 r_result   = i_result_from_alu;
+                next_state = STATE_IDLE;
             end
     endcase
 end
